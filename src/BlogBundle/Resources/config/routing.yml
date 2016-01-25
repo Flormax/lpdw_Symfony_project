@@ -1,0 +1,29 @@
+blog_homepage:
+    path:     /{page}
+    defaults:
+        _controller:  BlogBundle:Article:index
+        pahe:         1
+    requirements:
+        page:    \d*
+
+blog_view:
+    path:     /article/{id}
+    defaults: { _controller: BlogBundle:Article:view }
+    requirements:
+        id:    \d+
+
+blog_add:
+    path:     /article/add
+    defaults: { _controller: BlogBundle:Article:add }
+
+blog_edit:
+    path:     /article/edit/{id}
+    defaults: { _controller: BlogBundle:Article:edit }
+    requirements:
+        id:    \d+
+
+blog_delete:
+    path:     /article/delete/{id}
+    defaults: { _controller: BlogBundle:Article:delete }
+    requirements:
+        id:    \d+
