@@ -1,14 +1,14 @@
 <?php
 
-namespace BlogBundle\Entity\Blog;
+namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Article
  *
- * @ORM\Table(name="blog\article")
- * @ORM\Entity(repositoryClass="BlogBundle\Repository\Blog\ArticleRepository")
+ * @ORM\Table(name="article")
+ * @ORM\Entity(repositoryClass="BlogBundle\Repository\ArticleRepository")
  */
 class Article
 {
@@ -31,7 +31,7 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=500, unique=true)
+     * @ORM\Column(name="content", type="string", length=2000)
      */
     private $content;
 
@@ -45,23 +45,9 @@ class Article
     /**
      * @var int
      *
-     * @ORM\Column(name="userId", type="integer")
+     * @ORM\Column(name="user_id", type="integer")
      */
     private $userId;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tags_id", type="integer")
-     */
-    private $tagsId;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="categoryId", type="integer")
-     */
-    private $categoryId;
 
 
     /**
@@ -168,54 +154,6 @@ class Article
     public function getUserId()
     {
         return $this->userId;
-    }
-
-    /**
-     * Set tagsId
-     *
-     * @param integer $tagsId
-     *
-     * @return Article
-     */
-    public function setTagsId($tagsId)
-    {
-        $this->tagsId = $tagsId;
-
-        return $this;
-    }
-
-    /**
-     * Get tagsId
-     *
-     * @return int
-     */
-    public function getTagsId()
-    {
-        return $this->tagsId;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     *
-     * @return Article
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 }
 

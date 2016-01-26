@@ -1,19 +1,15 @@
 {% extends 'BlogBundle::layout.html.twig' %}
 
 {% block body %}
-    <h1>TRANCE REPORT COMMUNITY</h1>
     <ul>
-        <li>
-            POSTS TRC
+
+    {% for article in articles %}
+        <li style="background-color: yellow;">
+            <h2>{{article.title}}</h2>
+            {{article.content}}
         </li>
-        <li>
-            POSTS TRC
-        </li>
-        <li>
-            POSTS TRC
-        </li>
-        <li>
-            POSTS TRC
-        </li>
+        <hr/>
+    {% endfor %}
+
     </ul>
 {% endblock %}
