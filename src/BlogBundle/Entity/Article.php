@@ -13,6 +13,23 @@ use Doctrine\ORM\Mapping as ORM;
 class Article
 {
     /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="articles")
+     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
+     */
+    private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ArticleTag", mappedBy="articles")
+     */
+    private $articleTags;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -38,16 +55,22 @@ class Article
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="postDate", type="datetime")
+     * @ORM\Column(name="postDate", type="datetime", options={"default" = "CURRENT_TIMESTAMP"})
      */
     private $postDate;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Column(name="userId", type="integer")
      */
     private $userId;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="categoryId", type="integer")
+     */
+    private $categoryId;
 
 
     /**
@@ -133,6 +156,30 @@ class Article
     }
 
     /**
+     * Set categoryId
+     *
+     * @param integer $categoryId
+     *
+     * @return Article
+     */
+    public function setcategoryId($categoryId)
+    {
+        $this->categoryId = $categoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get categoryId
+     *
+     * @return int
+     */
+    public function categoryId()
+    {
+        return $this->categoryId;
+    }
+
+    /**
      * Set userId
      *
      * @param integer $userId
@@ -149,11 +196,109 @@ class Article
     /**
      * Get userId
      *
-     * @return int
+     * @return integer
      */
     public function getUserId()
     {
         return $this->userId;
     }
-}
 
+    /**
+     * Get categoryId
+     *
+     * @return integer
+     */
+    public function getCategoryId()
+    {
+        return $this->categoryId;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \BlogBundle\Entity\Category $category
+     *
+     * @return Article
+     */
+    public function setCategory(\BlogBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \BlogBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \BlogBundle\Entity\User $user
+     *
+     * @return Article
+     */
+    public function setUser(\BlogBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \BlogBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->articleTags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add articleTag
+     *
+     * @param \BlogBundle\Entity\ArticleTag $articleTag
+     *
+     * @return Article
+     */
+    public function addArticleTag(\BlogBundle\Entity\ArticleTag $articleTag)
+    {
+        $this->articleTags[] = $articleTag;
+
+        return $this;
+    }
+
+    /**
+     * Remove articleTag
+     *
+     * @param \BlogBundle\Entity\ArticleTag $articleTag
+     */
+    public function removeArticleTag(\BlogBundle\Entity\ArticleTag $articleTag)
+    {
+        $this->articleTags->removeElement($articleTag);
+    }
+
+    /**
+     * Get articleTags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticleTags()
+    {
+        return $this->articleTags;
+    }
+}

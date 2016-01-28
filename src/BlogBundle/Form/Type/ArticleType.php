@@ -13,12 +13,26 @@ class ArticleType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $option)
   {
     $builder
-      ->add('category', TextType::class) //Rajoute category_id dans la DB
+      ->add('category', ChoiceType::class, array(
+        'choices' => array(
+          'cat1' => 'cat1',
+          'cat2' => 'cat3',
+          'cat3' => 'cat3'
+        )
+      ))
       ->add('title', TextType::class)
       ->add('content', TextType::class)
-      ->add('tags', TextType::class)
-      ->add('tags', ButtonType::class, array( //A VOIR
-        'label' => 'Envoyer'
+      ->add('articleTags', ChoiceType::class, array(
+        'expanded' => true,
+        'multiple' => true,
+        'choices' => array(
+          'cat1' => 'cat1',
+          'cat2' => 'cat3',
+          'cat3' => 'cat3'
+        )
+      ))
+      ->add('submit', ButtonType::class, array(
+        'label' => 'Create'
       ));
   }
 }
