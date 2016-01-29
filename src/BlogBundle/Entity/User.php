@@ -20,7 +20,7 @@ class User
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="use_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -29,21 +29,21 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="mailAdress", type="string", length=255, unique=true)
+     * @ORM\Column(name="use_mailAdress", type="string", length=255, unique=true)
      */
     private $mailAdress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255)
+     * @ORM\Column(name="use_password", type="string", length=255)
      */
     private $password;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="roleId", type="integer")
+     * @ORM\Column(name="use_roleId", type="integer")
      */
     private $roleId;
 

@@ -20,11 +20,11 @@ class ArticleType extends AbstractType
       ))
       ->add('title', TextType::class)
       ->add('content', TextType::class)
-      ->add('articleTags', EntityType::class, array(
+      ->add('tags', EntityType::class, array(
         'class' => 'BlogBundle:Tag',
         'choice_label' => 'name',
         'multiple' => true,
-        'expanded' => true,
+        'expanded' => true
       ))
       ->add('submit', SubmitType::class, array(
         'label' => 'Create'

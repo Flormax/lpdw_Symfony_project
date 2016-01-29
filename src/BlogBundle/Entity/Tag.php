@@ -13,14 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Tag
 {
     /**
-     * @ORM\OneToMany(targetEntity="ArticleTag", mappedBy="tag")
-     */
-    private $articleTag;
-
-    /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="tag_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -29,9 +24,18 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="tag_name", type="string", length=255, unique=true)
      */
     private $name;
+
+    /**
+     * @var ArrayCollection Article $articles
+     *
+     * Inverse Side
+     *
+     * @ORM\ManyToMany(targetEntity="Article", mappedBy="tags", cascade={"persist", "merge"})
+     */
+    private $articles;
 
 
     /**
@@ -67,45 +71,46 @@ class Tag
     {
         return $this->name;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->articleTag = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Add articleTag
+     * Add article
      *
-     * @param \BlogBundle\Entity\ArticleTag $articleTag
+     * @param \BlogBundle\Entity\Article $article
      *
      * @return Tag
      */
-    public function addArticleTag(\BlogBundle\Entity\ArticleTag $articleTag)
+    public function addArticle(\BlogBundle\Entity\Article $article)
     {
-        $this->articleTag[] = $articleTag;
+        $this->articles[] = $article;
 
         return $this;
     }
 
     /**
-     * Remove articleTag
+     * Remove article
      *
-     * @param \BlogBundle\Entity\ArticleTag $articleTag
+     * @param \BlogBundle\Entity\Article $article
      */
-    public function removeArticleTag(\BlogBundle\Entity\ArticleTag $articleTag)
+    public function removeArticle(\BlogBundle\Entity\Article $article)
     {
-        $this->articleTag->removeElement($articleTag);
+        $this->articles->removeElement($article);
     }
 
     /**
-     * Get articleTag
+     * Get articles
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getArticleTag()
+    public function getArticles()
     {
-        return $this->articleTag;
+        return $this->articles;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->articles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }

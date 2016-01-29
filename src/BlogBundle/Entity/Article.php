@@ -14,25 +14,20 @@ class Article
 {
     /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="articles")
-     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="art_categoryId", referencedColumnName="cat_id")
      */
     private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="art_userId", referencedColumnName="use_id")
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="ArticleTag", mappedBy="articles")
-     */
-    private $articleTags;
-
-    /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="art_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -41,36 +36,50 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255, unique=true)
+     * @ORM\Column(name="art_title", type="string", length=255, unique=true)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=2000)
+     * @ORM\Column(name="art_content", type="string", length=2000)
      */
     private $content;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="postDate", type="datetime", options={"default" = "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="art_postDate", type="datetime", options={"default" = "CURRENT_TIMESTAMP"})
      */
     private $postDate;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="userId", type="integer")
+     * @ORM\Column(name="art_userId", type="integer")
      */
+
     private $userId;
+
     /**
      * @var int
      *
-     * @ORM\Column(name="categoryId", type="integer")
+     * @ORM\Column(name="art_categoryId", type="integer")
      */
     private $categoryId;
+
+    /**
+     * @var ArrayCollection Tag $tags
+     * Owning Side
+     *
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles", cascade={"persist", "merge"})
+     * @ORM\JoinTable(name="TAGGER",
+     *   joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="art_id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id")}
+     * )
+     */
+    private $tags;
 
 
     /**
@@ -260,45 +269,46 @@ class Article
     {
         return $this->user;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->articleTags = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Add articleTag
+     * Add tag
      *
-     * @param \BlogBundle\Entity\ArticleTag $articleTag
+     * @param \BlogBundle\Entity\Tag $tag
      *
      * @return Article
      */
-    public function addArticleTag(\BlogBundle\Entity\ArticleTag $articleTag)
+    public function addTag(\BlogBundle\Entity\Tag $tag)
     {
-        $this->articleTags[] = $articleTag;
+        $this->tags[] = $tag;
 
         return $this;
     }
 
     /**
-     * Remove articleTag
+     * Remove tag
      *
-     * @param \BlogBundle\Entity\ArticleTag $articleTag
+     * @param \BlogBundle\Entity\Tag $tag
      */
-    public function removeArticleTag(\BlogBundle\Entity\ArticleTag $articleTag)
+    public function removeTag(\BlogBundle\Entity\Tag $tag)
     {
-        $this->articleTags->removeElement($articleTag);
+        $this->tags->removeElement($tag);
     }
 
     /**
-     * Get articleTags
+     * Get tags
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getArticleTags()
+    public function getTags()
     {
-        return $this->articleTags;
+        return $this->tags;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }

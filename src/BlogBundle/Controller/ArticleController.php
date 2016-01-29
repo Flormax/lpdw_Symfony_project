@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use BlogBundle\Entity\Article;
+use BlogBundle\Entity\User;
 use BlogBundle\Form\Type\ArticleType;
 
 class ArticleController extends Controller
