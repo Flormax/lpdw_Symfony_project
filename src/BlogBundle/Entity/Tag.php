@@ -29,11 +29,7 @@ class Tag
     private $name;
 
     /**
-     * @var ArrayCollection Article $articles
-     *
-     * Inverse Side
-     *
-     * @ORM\ManyToMany(targetEntity="Article", mappedBy="tags", cascade={"persist", "merge"})
+     * @ORM\ManyToMany(targetEntity="Article", mappedBy="tags")
      */
     private $articles;
 

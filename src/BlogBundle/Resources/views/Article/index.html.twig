@@ -2,14 +2,16 @@
 
 {% block body %}
     <ul>
-
     {% for article in articles %}
-        <li style="background-color: yellow;">
-            <h2>{{article.title}}</h2>
-            {{article.content}}
+        <li style="background-color: whitesmoke;margin-left:20px;width:75%;">
+            <a href=""><h5>{{article.title}}</h2></a>
+            <p>{{article.content|raw}}</p>
+            {% if is_granted('ROLE_ADMIN') %}
+              <a href="{{ path('blog_delete', {'id': article.id}) }}">Delete</a>
+            {% endif %}
         </li>
         <hr/>
     {% endfor %}
-
     </ul>
+    {% include 'BlogBundle::pagination.html.twig' %}
 {% endblock %}

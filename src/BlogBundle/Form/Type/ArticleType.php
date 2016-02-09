@@ -19,12 +19,22 @@ class ArticleType extends AbstractType
         'choice_label' => 'name',
       ))
       ->add('title', TextType::class)
-      ->add('content', TextType::class)
+      // ->add('content', TextType::class)
+      ->add('content', 'Ivory\CKEditorBundle\Form\Type\CKEditorType', array(
+        'required' => true,
+        'config' => array(
+          'toolbar' => array(
+            array(
+                'name'  => 'basicstyles',
+                'items' => array('Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'),
+            ),
+        ),
+        'uiColor' => '#ffffff'
+      )))
       ->add('tags', EntityType::class, array(
         'class' => 'BlogBundle:Tag',
         'choice_label' => 'name',
         'multiple' => true,
-        'expanded' => true
       ))
       ->add('submit', SubmitType::class, array(
         'label' => 'Create'

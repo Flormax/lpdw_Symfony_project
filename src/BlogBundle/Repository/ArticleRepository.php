@@ -2,6 +2,8 @@
 
 namespace BlogBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * ArticleRepository
  *
@@ -21,6 +23,33 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
         ->getSingleResult();
 
         return $article;
+    } catch (\Exception $ex){
+         return null;
+    }
+  }
+
+  public function getList($page=1, $maxperpage=2)
+  {
+      $q = $this->_em->createQueryBuilder()
+          ->select('article')
+          ->from('BlogBundle:Article','article')
+      ;
+         $q->setFirstResult(($page-1) * $maxperpage)
+          ->setMaxResults($maxperpage);
+
+      return new Paginator($q);
+  }
+
+  public function getTotal()
+  {
+    try{
+      $total = $this
+        ->createQueryBuilder('q')
+        ->select('count(q)')
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        return $total;
     } catch (\Exception $ex){
          return null;
     }

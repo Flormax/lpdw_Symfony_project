@@ -2,15 +2,29 @@
     <head>
         <meta charset="utf-8">
         <title>Trance RC</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
     </head>
-    <body style="background-color: red;">
-        <nav>
-          <a href="">Acceuil</a> <a href="">Nouveau</a> <a href="">Connexion</a>
+    <body style="margin-left: 10px;">
+        <nav style="background-color: black;width: 80%;padding-left:10px;color: white;">
+          <a style="padding: 10px;" href="{{ path('blog_homepage', {'page': 1}) }}">[   Homepage   ]</a> |
+          <a style="padding: 10px;" href="{{ path('blog_homepage') }}">[   Research   ]</a> |
+          {% if is_granted('ROLE_ADMIN') %}
+            <a style="padding: 10px;" href="{{ path('blog_add_article') }}">[   New article   ]</a> |
+            <a style="padding: 10px;" href="{{ path('blog_add_category') }}">[   New category   ]</a> |
+            <a style="padding: 10px;" href="{{ path('blog_add_tag') }}">[   New tag   ]</a> |
+          {% endif %}
+          <a style="padding: 10px;" href="{{ path('blog_logout') }}">[   Logout   ]</a>
         </nav>
         <div>
-            <h1>Tr_RC</h1>
             {% block body %}
             {% endblock %}
         </div>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+        <script>
+          $(document).ready(function() {
+            $('select').material_select();
+          });
+        </script>
     </body>
 </html>

@@ -1,8 +1,8 @@
 blog_homepage:
-    path:     /{page}
+    path:     article/list/{page}
     defaults:
         _controller:  BlogBundle:Article:index
-        pahe:         1
+        page:         1
     requirements:
         page:    \d*
 
@@ -12,18 +12,40 @@ blog_view:
     requirements:
         id:    \d+
 
-blog_add:
-    path:     /article/add
+blog_add_article:
+    path:     admin/article/add
     defaults: { _controller: BlogBundle:Article:add }
 
 blog_edit:
-    path:     /article/edit/{id}
+    path:     /admin/edit/{id}
     defaults: { _controller: BlogBundle:Article:edit }
     requirements:
         id:    \d+
 
+blog_add_tag:
+    path:     admin/tag/add
+    defaults: { _controller: BlogBundle:Tag:add }
+
+blog_add_category:
+    path:     admin/category/add
+    defaults: { _controller: BlogBundle:Category:add }
+
 blog_delete:
-    path:     /article/delete/{id}
+    path:     /admin/delete/{id}
     defaults: { _controller: BlogBundle:Article:delete }
     requirements:
         id:    \d+
+
+blog_login:
+    path: /login
+    defaults: { _controller: BlogBundle:Security:login }
+
+blog_login_check:
+    path: /login_check
+
+blog_logout:
+    path:     /logout
+
+blog_test:
+    path:     /test
+    defaults: { _controller: BlogBundle:Security:test }

@@ -13,18 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Article
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="articles")
-     * @ORM\JoinColumn(name="art_categoryId", referencedColumnName="cat_id")
-     */
-    private $category;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
-     * @ORM\JoinColumn(name="art_userId", referencedColumnName="use_id")
-     */
-    private $user;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="art_id", type="integer")
@@ -55,30 +43,23 @@ class Article
     private $postDate;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="art_userId", type="integer")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
+     * @ORM\JoinColumn(name="art_userId", referencedColumnName="use_id")
      */
-
-    private $userId;
+    private $user;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="art_categoryId", type="integer")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="articles")
+     * @ORM\JoinColumn(name="art_categoryId", referencedColumnName="cat_id")
      */
-    private $categoryId;
+    private $category;
 
     /**
-     * @var ArrayCollection Tag $tags
-     * Owning Side
-     *
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles", cascade={"persist", "merge"})
-     * @ORM\JoinTable(name="TAGGER",
-     *   joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="art_id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id")}
-     * )
-     */
+    * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
+    * @ORM\JoinTable(name="tagging",
+    *   joinColumns={@ORM\JoinColumn(name="tagging_articleId", referencedColumnName="art_id")},
+    *   inverseJoinColumns={@ORM\JoinColumn(name="tagging_tagId", referencedColumnName="tag_id")})
+    */
     private $tags;
 
 
@@ -179,50 +160,6 @@ class Article
     }
 
     /**
-     * Get categoryId
-     *
-     * @return int
-     */
-    public function categoryId()
-    {
-        return $this->categoryId;
-    }
-
-    /**
-     * Set userId
-     *
-     * @param integer $userId
-     *
-     * @return Article
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return integer
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
-    }
-
-    /**
      * Set category
      *
      * @param \BlogBundle\Entity\Category $category
@@ -279,6 +216,7 @@ class Article
      */
     public function addTag(\BlogBundle\Entity\Tag $tag)
     {
+        $tag->addArticle($this);
         $this->tags[] = $tag;
 
         return $this;

@@ -3,6 +3,8 @@
 namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="BlogBundle\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\OneToMany(targetEntity="Article", mappedBy="user")
@@ -29,6 +31,13 @@ class User
     /**
      * @var string
      *
+     * @ORM\Column(name="use_username", type="string", length=255, unique=true)
+     */
+    private $username;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="use_mailAdress", type="string", length=255, unique=true)
      */
     private $mailAdress;
@@ -41,11 +50,14 @@ class User
     private $password;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="use_roleId", type="integer")
+     * @ORM\Column(name="use_role", type="array")
      */
-    private $roleId;
+    private $roles = array();
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
 
 
     /**
@@ -56,6 +68,30 @@ class User
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 
     /**
@@ -106,33 +142,10 @@ class User
         return $this->password;
     }
 
-    /**
-     * Set roleId
-     *
-     * @param integer $roleId
-     *
-     * @return User
-     */
-    public function setroleId($roleId)
-    {
-        $this->roleId = $roleId;
-
-        return $this;
-    }
-
-    /**
-     * Get roleId
-     *
-     * @return int
-     */
-    public function getroleId()
-    {
-        return $this->roleId;
-    }
-
     public function __construct()
     {
       $this->articles = new ArrayCollection();
+      $this->roles = array("ROLE_USER");
     }
 
     /**
@@ -167,5 +180,74 @@ class User
     public function getArticles()
     {
         return $this->articles;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+          $this->id,
+          $this->mailAdress,
+          $this->password,
+        ));
+    }
+    public function unserialize($serialized)
+    {
+        list (
+          $this->id,
+          $this->mailAdress,
+          $this->password,
+        ) = unserialize($serialized);
+    }
+
+    public function getSalt()
+    {
+      return null;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return User
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

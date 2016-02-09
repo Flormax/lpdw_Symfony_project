@@ -1,8 +1,11 @@
 {% extends 'BlogBundle::layout.html.twig' %}
 
 {% block body %}
-    <div style="background-color: blue;">
-      <h2>{{article.title}}</h2>
-      {{article.content}}
+    <div style="background-color: whitesmoke;margin-left:20px;width:75%;">
+      <h5>{{article.title}}</h2>
+      {{article.content|raw}}
+      {% for tag in article.tags %}
+        {{tag.name}}
+      {% endfor %}
     </div>
 {% endblock %}

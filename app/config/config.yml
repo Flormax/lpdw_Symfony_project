@@ -68,3 +68,17 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# #Assetic Configuration
+# assetic:
+#     bundles: [ MaterializeBundle ]
+
+#MaterializeBundle
+materialize:
+    local_js: '@AppBundle/Resources/public/js/materialize.min.js'
+    local_fonts_dir: '@AppBundle/Resources/public/fonts/'
+    local_css: '@AppBundle/Resources/public/css/materialize.min.css'
+    local_cdn: 'cdn.domain.com'
+    version: 0.97.0
+    html5: true
+    async: false

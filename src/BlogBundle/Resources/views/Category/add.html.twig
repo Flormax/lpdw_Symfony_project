@@ -3,11 +3,7 @@
 {% block body %}
   {% form_theme form 'BlogBundle::fields.html.twig' %}
   {{ form_start(form, {'attr': {'class': 'col s12'}}) }}
-
-    {{ form_row(form.category) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.content) }}
-    {{ form_row(form.tags) }}
-
+    {{ form_row(form.name) }}
   {{ form_end(form) }}
+
 {% endblock %}
