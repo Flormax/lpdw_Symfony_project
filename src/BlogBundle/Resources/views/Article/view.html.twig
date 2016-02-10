@@ -3,9 +3,13 @@
 {% block body %}
     <div style="background-color: whitesmoke;margin-left:20px;width:75%;">
       <h5>{{article.title}}</h2>
-      {{article.content|raw}}
-      {% for tag in article.tags %}
-        {{tag.name}}
-      {% endfor %}
+      <p>Category: {{article.category.name}}</p>
+      <p>{{article.content|raw}}</p>.
+      <p>By: {{article.user.username}}, {{article.getPostDate()|date("d/m/Y")}}</p>
+      <p>Tags:<i>
+        {% for tag in article.tags %}
+          {{tag.name}}
+        {% endfor %}
+      </i></p>
     </div>
 {% endblock %}

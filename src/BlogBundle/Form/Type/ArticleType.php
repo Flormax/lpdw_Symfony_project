@@ -19,7 +19,6 @@ class ArticleType extends AbstractType
         'choice_label' => 'name',
       ))
       ->add('title', TextType::class)
-      // ->add('content', TextType::class)
       ->add('content', 'Ivory\CKEditorBundle\Form\Type\CKEditorType', array(
         'required' => true,
         'config' => array(

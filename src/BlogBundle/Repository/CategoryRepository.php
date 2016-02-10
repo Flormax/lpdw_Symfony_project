@@ -10,4 +10,19 @@ namespace BlogBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getByName($name)
+  {
+    try{
+      $category = $this
+        ->createQueryBuilder('p')
+        ->where('p.name = :name')
+        ->setParameter('name', $name)
+        ->getQuery()
+        ->getSingleResult();
+
+        return $category;
+    } catch (\Exception $ex){
+         return null;
+    }
+  }
 }

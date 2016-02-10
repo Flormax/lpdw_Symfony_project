@@ -7,21 +7,41 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use BlogBundle\Entity\Article;
 use BlogBundle\Entity\User;
+use BlogBundle\Entity\Category;
 use BlogBundle\Form\Type\ArticleType;
 
 class ArticleController extends Controller
 {
-    public function indexAction(Request $request, $page)
+    public function indexAction(Request $request, $page, $category_name)
     {
       $em = $this->getDoctrine()->getManager();
-      $repository = $em->getRepository('BlogBundle:Article');
+      $repository_article = $em->getRepository('BlogBundle:Article');
+      $repository_category = $em->getRepository('BlogBundle:Category');
 
-      $articles = $repository->getList($page, 2);
-      $articles_count = $repository->getTotal();
+      if(isset($category_name))
+      {
+        $category = $repository_category->getByName($category_name);
+        $articles = $repository_article->getListByCategory($page, 2, $category);
+        $articles_count = $repository_article->getTotalByCategory($category);
+        $route = "blog_list_by_category";
+      } else {
+        if(isset($page))
+        {
+          $articles = $repository_article->getList($page, 2);
+          $articles_count = $repository_article->getTotal();
+          $route = "blog_list";
+        } else {
+          $articles = $repository_article->getLastFive();
+          return $this->render('BlogBundle:Article:index.html.twig', array(
+            'articles' => $articles
+          ));
+        }
+      }
 
       $pagination = array(
         'page' => $page,
-        'route' => 'blog_homepage',
+        'route' => $route,
+        'category' => $category_name,
         'pages_count' => ceil($articles_count / 2),
         'route_params' => array()
       );
@@ -49,7 +69,7 @@ class ArticleController extends Controller
     public function addAction(Request $request)
     {
       $article = new Article();
-
+      //getuser
       $user = $this->get('security.token_storage')->getToken()->getUser();
       $article->setUser($user);
       $article->setPostDate(new \DateTime());

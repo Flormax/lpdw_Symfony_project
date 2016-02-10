@@ -1,0 +1,12 @@
+{% extends 'BlogBundle::layout.html.twig' %}
+
+{% block body %}
+    <ul>
+    {% for category in categories %}
+        <li style="background-color: whitesmoke;margin-left:20px;width:75%;">
+            <a href="{{ path('blog_list_by_category', {'category_name': category.name}) }}"><h5>{{category.name}}</h5></a>
+        </li>
+        <hr/>
+    {% endfor %}
+    </ul>
+{% endblock %}

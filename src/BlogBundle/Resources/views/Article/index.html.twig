@@ -4,7 +4,7 @@
     <ul>
     {% for article in articles %}
         <li style="background-color: whitesmoke;margin-left:20px;width:75%;">
-            <a href=""><h5>{{article.title}}</h2></a>
+            <a href="{{ path('blog_view', {'id': article.id}) }}"><h5>{{article.title}}</h2></a> {{article.getPostDate()|date("d/m/Y")}}
             <p>{{article.content|raw}}</p>
             {% if is_granted('ROLE_ADMIN') %}
               <a href="{{ path('blog_delete', {'id': article.id}) }}">Delete</a>
@@ -13,5 +13,7 @@
         <hr/>
     {% endfor %}
     </ul>
-    {% include 'BlogBundle::pagination.html.twig' %}
+    {% if pagination is defined %}
+      {% include 'BlogBundle::pagination.html.twig' %}
+    {% endif %}
 {% endblock %}

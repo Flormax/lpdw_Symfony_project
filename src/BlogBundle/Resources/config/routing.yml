@@ -1,10 +1,36 @@
 blog_homepage:
-    path:     article/list/{page}
+    path:     /
+    defaults:
+        _controller:  BlogBundle:Article:index
+        page:         null
+        category_name:     null
+    requirements:
+        page:     \d*
+        # category: \D
+
+blog_list:
+    path:     /article/list/{page}
+    defaults:
+        _controller:  BlogBundle:Article:index
+        page:         1
+        category_name:     null
+    requirements:
+        page:     \d*
+        # category: \D
+
+blog_list_by_category:
+    path:     /article/listbycategory/{category_name}/{page}
     defaults:
         _controller:  BlogBundle:Article:index
         page:         1
     requirements:
-        page:    \d*
+        page:     \d*
+        # category: \D
+
+blog_categories:
+    path:     /categories
+    defaults:
+        _controller:  BlogBundle:Category:index
 
 blog_view:
     path:     /article/{id}

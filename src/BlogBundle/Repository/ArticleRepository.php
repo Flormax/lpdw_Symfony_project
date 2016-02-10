@@ -28,16 +28,30 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     }
   }
 
+  public function getLastFive()
+  {
+    try{
+      $articles = $this
+        ->createQueryBuilder('p')
+        ->orderby('p.postDate', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        return $articles;
+    } catch (\Exception $ex){
+         return null;
+    }
+  }
+
   public function getList($page=1, $maxperpage=2)
   {
-      $q = $this->_em->createQueryBuilder()
-          ->select('article')
-          ->from('BlogBundle:Article','article')
-      ;
-         $q->setFirstResult(($page-1) * $maxperpage)
-          ->setMaxResults($maxperpage);
+    $q = $this->_em->createQueryBuilder()
+        ->select('article')
+        ->from('BlogBundle:Article','article');
 
-      return new Paginator($q);
+    $q->setFirstResult(($page-1) * $maxperpage)
+      ->setMaxResults($maxperpage);
+    return new Paginator($q);
   }
 
   public function getTotal()
@@ -46,6 +60,37 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
       $total = $this
         ->createQueryBuilder('q')
         ->select('count(q)')
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        return $total;
+    } catch (\Exception $ex){
+         return null;
+    }
+  }
+
+  public function getListByCategory($page=1, $maxperpage=2, $category)
+  {
+    $q = $this->_em->createQueryBuilder()
+        ->select('article')
+        ->from('BlogBundle:Article','article')
+        ->where('article.category = :category');
+
+    $q->setParameter('category', $category);
+
+    $q->setFirstResult(($page-1) * $maxperpage)
+        ->setMaxResults($maxperpage);
+    return new Paginator($q);
+  }
+
+  public function getTotalByCategory($category)
+  {
+    try{
+      $total = $this
+        ->createQueryBuilder('q')
+        ->select('count(q)')
+        ->where('q.category = :category')
+        ->setParameter('category', $category)
         ->getQuery()
         ->getSingleScalarResult();
 

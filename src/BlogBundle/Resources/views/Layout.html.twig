@@ -6,8 +6,9 @@
     </head>
     <body style="margin-left: 10px;">
         <nav style="background-color: black;width: 80%;padding-left:10px;color: white;">
-          <a style="padding: 10px;" href="{{ path('blog_homepage', {'page': 1}) }}">[   Homepage   ]</a> |
-          <a style="padding: 10px;" href="{{ path('blog_homepage') }}">[   Research   ]</a> |
+          <a style="padding: 10px;" href="{{ path('blog_homepage') }}">[   Homepage   ]</a> |
+          <a style="padding: 10px;" href="{{ path('blog_list', {'page': 1}) }}">[   All   ]</a> |
+          <a style="padding: 10px;" href="{{ path('blog_categories') }}">[   Categories   ]</a> |
           {% if is_granted('ROLE_ADMIN') %}
             <a style="padding: 10px;" href="{{ path('blog_add_article') }}">[   New article   ]</a> |
             <a style="padding: 10px;" href="{{ path('blog_add_category') }}">[   New category   ]</a> |
