@@ -1,4 +1,10 @@
 services:
-#    blog.example:
-#        class: BlogBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    blog.comment_manager:
+        class: BlogBundle\CommentManager\CommentManager
+        arguments: ["@doctrine"]
+    blog.comment_extension:
+        class: BlogBundle\Twig\CommentExtension
+        arguments: ["@blog.comment_manager"]
+        public: false
+        tags:
+            - {name: twig.extension}

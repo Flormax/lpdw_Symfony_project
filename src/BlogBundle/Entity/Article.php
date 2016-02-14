@@ -62,7 +62,6 @@ class Article
     */
     private $tags;
 
-
     /**
      * Get id
      *

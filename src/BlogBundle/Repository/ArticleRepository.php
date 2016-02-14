@@ -99,4 +99,61 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
          return null;
     }
   }
+
+  public function getListBySearch($page=1, $maxperpage=2, $title, $tag)
+  {
+    $q = $this->_em->createQueryBuilder()
+        ->select('article')
+        ->from('BlogBundle:Article','article')
+        ->innerJoin('article.tags', 'a');
+
+    if(isset($name)){
+        $q->andWhere('article.title = :title')
+            ->setParameter('title', $title);
+    }
+    if(isset($tag)) {
+        $q->andWhere('article.tag = :tag')
+            ->setParameter('tag', $tag);
+    }
+
+    $q->orderBy('article.postDate', 'DESC');
+
+    $q->setFirstResult(($page-1) * $maxperpage)
+        ->setMaxResults($maxperpage);
+
+    return new Paginator($q);
+  }
+
+  public function getTotalBySearch($title, $tag)
+  {
+    $tags = new \Doctrine\Common\Collections\ArrayCollection();
+    try{
+      $total = $this
+        ->createQueryBuilder('q')
+        ->select('count(q)')
+        ->innerJoin('q.tags', 'a');
+
+      if(isset($title)){
+          $total->andWhere('q.title = :title')
+              ->setParameter('title', $title);
+      }
+      if(isset($tag)) {
+        $tags[] = $tag;
+          $total->andWhere('q.tags = :tag')
+              ->setParameter('tag', $tags);
+      }
+
+      $total->getQuery()
+        ->getSingleScalarResult();
+
+      echo($total);
+      die;
+
+        return $total->getFirstResult();
+    } catch (\Exception $ex){
+        echo($ex);
+        die;
+         return null;
+    }
+  }
 }

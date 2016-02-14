@@ -5,10 +5,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
     </head>
     <body style="margin-left: 10px;">
-        <nav style="background-color: black;width: 80%;padding-left:10px;color: white;">
+        <nav style="background-color: black;width: 100%;padding-left:10px;color: white;">
+          {% if is_granted('ROLE_ADMIN') %}
+            <span style="padding: 10px;color: red" href="{{ path('blog_homepage') }}"><b>[ (╯°□°）╯︵ ADMIN]</b></span> |
+          {% endif %}
           <a style="padding: 10px;" href="{{ path('blog_homepage') }}">[   Homepage   ]</a> |
           <a style="padding: 10px;" href="{{ path('blog_list', {'page': 1}) }}">[   All   ]</a> |
           <a style="padding: 10px;" href="{{ path('blog_categories') }}">[   Categories   ]</a> |
+          <a style="padding: 10px;" href="{{ path('blog_search') }}">[   Research   ]</a> |
           {% if is_granted('ROLE_ADMIN') %}
             <a style="padding: 10px;" href="{{ path('blog_add_article') }}">[   New article   ]</a> |
             <a style="padding: 10px;" href="{{ path('blog_add_category') }}">[   New category   ]</a> |
@@ -16,6 +20,7 @@
           {% endif %}
           <a style="padding: 10px;" href="{{ path('blog_logout') }}">[   Logout   ]</a>
         </nav>
+
         <div>
             {% block body %}
             {% endblock %}

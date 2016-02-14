@@ -12,4 +12,20 @@
         {% endfor %}
       </i></p>
     </div>
+    <div style="margin-left:50px;">
+      <b>Comments</b>
+      {% for comment in comments %}
+        <div style="background-color: gainsboro;margin-bottom: 10px;width:20%;">
+          <h6><u>By {{ comment.author }}</u></h6>
+          <p>{{ comment.content }}</p>
+          <p><i>{{ comment.postDate|date("d/m/Y") }}</i></p>
+        </div>
+      {% endfor %}
+      <b>Post a comment:</b>
+      {% form_theme form 'BlogBundle::fields.html.twig' %}
+      {{ form_start(form, {'attr': {'class': 'col s6'}}) }}
+        {{ form_row(form.author) }}
+        {{ form_row(form.content) }}
+      {{ form_end(form) }}
+    </div>
 {% endblock %}

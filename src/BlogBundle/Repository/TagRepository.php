@@ -10,4 +10,20 @@ namespace BlogBundle\Repository;
  */
 class TagRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getByName($name)
+  {
+    try{
+      $tag = $this
+        ->createQueryBuilder('p')
+        ->where('p.name = :name')
+        ->setParameter('name', $name)
+        ->getQuery()
+        ->getSingleResult();
+        return $tag;
+    } catch (\Exception $ex){
+      echo('ERR TAG'.$ex);
+      die;
+         return null;
+    }
+  }
 }

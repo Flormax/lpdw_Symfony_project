@@ -18,6 +18,11 @@ blog_list:
         page:     \d*
         # category: \D
 
+blog_categories:
+    path:     /categories
+    defaults:
+        _controller:  BlogBundle:Category:index
+
 blog_list_by_category:
     path:     /article/listbycategory/{category_name}/{page}
     defaults:
@@ -27,10 +32,12 @@ blog_list_by_category:
         page:     \d*
         # category: \D
 
-blog_categories:
-    path:     /categories
+blog_search:
+    path:     /search/{filters}/{page}
     defaults:
-        _controller:  BlogBundle:Category:index
+        _controller:  BlogBundle:Article:search
+        filters:       null
+        page:          1
 
 blog_view:
     path:     /article/{id}

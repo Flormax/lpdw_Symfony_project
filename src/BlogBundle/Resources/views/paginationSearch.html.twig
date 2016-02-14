@@ -1,0 +1,15 @@
+<div class="pagination">
+    <div class="pagination-buttons">
+        {% if pagination.page>1 %}
+            <a href="{{ path(pagination.route, pagination.route_params|merge({'page': 1, 'filters' : pagination.filters})) }}"><<</a>
+            <a href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page-1, 'filters' : pagination.filters})) }}"><</a>
+        {% endif %}
+        {% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.pages_count)) %}
+            <a{% if p == pagination.page %} class="current-page"{% endif %} href="{{ path(pagination.route, pagination.route_params|merge({'page': p, 'filters' : pagination.filters})) }}">{{ p }}</a>
+        {% endfor %}
+        {% if pagination.page<pagination.pages_count %}
+            <a href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.page+1, 'filters' : pagination.filters})) }}">></a>
+            <a href="{{ path(pagination.route, pagination.route_params|merge({'page': pagination.pages_count, 'filters' : pagination.filters})) }}">>></a>
+        {% endif %}
+    </div>
+</div>
