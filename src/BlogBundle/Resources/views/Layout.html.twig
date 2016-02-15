@@ -18,9 +18,13 @@
             <a style="padding: 10px;" href="{{ path('blog_add_category') }}">[   New category   ]</a> |
             <a style="padding: 10px;" href="{{ path('blog_add_tag') }}">[   New tag   ]</a> |
           {% endif %}
-          <a style="padding: 10px;" href="{{ path('blog_logout') }}">[   Logout   ]</a>
+          {% if app.user %}
+            <a style="padding: 10px;" href="{{ path('blog_logout') }}">[   Logout   ]</a>
+          {% else %}
+            <a style="padding: 10px;" href="{{ path('blog_login') }}">[   Login   ]</a>
+          {% endif %}
         </nav>
-
+        <div></div>
         <div>
             {% block body %}
             {% endblock %}
@@ -30,6 +34,9 @@
         <script>
           $(document).ready(function() {
             $('select').material_select();
+          });
+          $(function() {
+            $('.datepicker').pickadate({format: 'yyyy-mm-dd'});
           });
         </script>
     </body>

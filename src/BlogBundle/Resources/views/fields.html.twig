@@ -23,7 +23,7 @@
     {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
         {% set required = false %}
     {%- endif -%}
-    <select {% if multiple %} multiple="multiple"{% endif %} {{ block('widget_attributes') }}">
+    <select {% if multiple %} multiple="multiple"{% endif %} {{ block('widget_attributes') }}>
         <option disabled selected>Choose a {{ form.vars.name }}</option>
         {%- if placeholder is not none -%}
             <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
@@ -31,11 +31,6 @@
         {%- set options = choices -%}
         {{- block('choice_widget_options') -}}
     </select>
-    <script>
-      $(document).ready(function() {
-      $('select').material_select();
-      });
-    </script>
 {%- endblock choice_widget_collapsed -%}
 
 {%- block choice_widget_options -%}
@@ -51,6 +46,10 @@
         {%- endif -%}
     {% endfor %}
 {%- endblock choice_widget_options -%}
+
+{%- block date_widget -%}
+      <input placeholder="{{ (form.vars.name == "postDate") ? 'Publication date' : '' }}" type="date" class="datepicker" {% if value is not empty %}value="{{ value }}" {% endif %} {{ block('widget_attributes') }}>
+{%- endblock date_widget -%}
 
 {%- block form_row -%}
   <div class="row">

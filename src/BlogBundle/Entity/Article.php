@@ -38,7 +38,7 @@ class Article
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="art_postDate", type="datetime", options={"default" = "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="art_postDate", type="date")
      */
     private $postDate;
 

@@ -1,29 +1,33 @@
 {% extends 'BlogBundle::layout.html.twig' %}
 
 {% block body %}
-  {% if form is defined %}
-    {% form_theme form 'BlogBundle::fields.html.twig' %}
-    {{ form_start(form, {'attr': {'class': 'col s12'}}) }}
-      {{ form_row(form.name) }}
-      {{ form_row(form.tag) }}
-    {{ form_end(form) }}
-  {% endif %}
+  {% if app.request.query.get('status') is defined and app.request.query.get('status') == 204 %}
+    <h3>No results</h3>
+  {% else %}
+    {% if form is defined %}
+      {% form_theme form 'BlogBundle::fields.html.twig' %}
+      {{ form_start(form, {'attr': {'class': 'col s12'}}) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.tag) }}
+      {{ form_end(form) }}
+    {% endif %}
 
-  {% if articles is defined %}
-    {% for article in articles %}
-        <li style="background-color: whitesmoke;margin-left:20px;width:75%;">
-            <a href="{{ path('blog_view', {'id': article.id}) }}"><h5>{{article.title}}</h2></a> {{article.getPostDate()|date("d/m/Y")}}
-            <p>{{article.content|raw}}</p>
-            {% if is_granted('ROLE_ADMIN') %}
-              <a href="{{ path('blog_delete', {'id': article.id}) }}">Delete</a>
-            {% endif %}
-        </li>
-        <hr/>
-    {% endfor %}
-  {% endif %}
+    {% if articles is defined %}
+      {% for article in articles %}
+          <li style="background-color: whitesmoke;margin-left:20px;width:75%;">
+              <a href="{{ path('blog_view', {'id': article.id}) }}"><h5>{{article.title}}</h2></a> {{article.getPostDate()|date("d/m/Y")}}
+              <p>{{article.content|raw}}</p>
+              {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('blog_delete', {'id': article.id}) }}">Delete</a>
+              {% endif %}
+          </li>
+          <hr/>
+      {% endfor %}
+    {% endif %}
 
-  {% if pagination is defined %}
-    {% include 'BlogBundle::paginationSearch.html.twig' %}
+    {% if pagination is defined %}
+      {% include 'BlogBundle::paginationSearch.html.twig' %}
+    {% endif %}
   {% endif %}
 
 {% endblock %}

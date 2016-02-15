@@ -8,3 +8,11 @@ services:
         public: false
         tags:
             - {name: twig.extension}
+    blog.cookieMessage:
+        class: BlogBundle\CookieMessage\CookieMessage
+
+    blog.cookieListener:
+        class: BlogBundle\CookieMessage\CookieListener
+        arguments: ["@blog.cookieMessage"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: processCookie }

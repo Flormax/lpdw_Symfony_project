@@ -3,6 +3,7 @@
 namespace BlogBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use BlogBundle\Entity\Tag;
 
 /**
  * ArticleRepository
@@ -34,6 +35,9 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
       $articles = $this
         ->createQueryBuilder('p')
         ->orderby('p.postDate', 'DESC')
+        ->setMaxResults(5)
+        ->where('p.postDate <= :date')
+        ->setParameter('date', new \DateTime())
         ->getQuery()
         ->getResult();
 
@@ -43,38 +47,29 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     }
   }
 
-  public function getList($page=1, $maxperpage=2)
+  public function getList($page=1, $maxperpage=5)
   {
     $q = $this->_em->createQueryBuilder()
         ->select('article')
-        ->from('BlogBundle:Article','article');
+        ->from('BlogBundle:Article','article')
+        ->where('article.postDate <= :date')
+        ->setParameter('date', new \DateTime())
+        ->orderby('article.postDate', 'DESC');
 
     $q->setFirstResult(($page-1) * $maxperpage)
       ->setMaxResults($maxperpage);
     return new Paginator($q);
   }
 
-  public function getTotal()
-  {
-    try{
-      $total = $this
-        ->createQueryBuilder('q')
-        ->select('count(q)')
-        ->getQuery()
-        ->getSingleScalarResult();
-
-        return $total;
-    } catch (\Exception $ex){
-         return null;
-    }
-  }
-
-  public function getListByCategory($page=1, $maxperpage=2, $category)
+  public function getListByCategory($page=1, $maxperpage=5, $category)
   {
     $q = $this->_em->createQueryBuilder()
         ->select('article')
         ->from('BlogBundle:Article','article')
-        ->where('article.category = :category');
+        ->where('article.category = :category')
+        ->andWhere('article.postDate <= :date')
+        ->setParameter('date', new \DateTime())
+        ->orderby('article.postDate', 'DESC');
 
     $q->setParameter('category', $category);
 
@@ -83,37 +78,22 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     return new Paginator($q);
   }
 
-  public function getTotalByCategory($category)
-  {
-    try{
-      $total = $this
-        ->createQueryBuilder('q')
-        ->select('count(q)')
-        ->where('q.category = :category')
-        ->setParameter('category', $category)
-        ->getQuery()
-        ->getSingleScalarResult();
-
-        return $total;
-    } catch (\Exception $ex){
-         return null;
-    }
-  }
-
-  public function getListBySearch($page=1, $maxperpage=2, $title, $tag)
+  public function getListBySearch($page=1, $maxperpage=5, $queryFilterTab)
   {
     $q = $this->_em->createQueryBuilder()
-        ->select('article')
-        ->from('BlogBundle:Article','article')
-        ->innerJoin('article.tags', 'a');
+                    ->select('article')
+                    ->from('BlogBundle:Article','article')
+                    ->where('article.postDate <= :date')
+                    ->setParameter('date', new \DateTime());
 
-    if(isset($name)){
-        $q->andWhere('article.title = :title')
-            ->setParameter('title', $title);
+    if(isset($queryFilterTab['tagName'])) {
+        $q->innerJoin('article.tags', 't', 'WITH', 't.name LIKE :tag_name')
+          ->setParameter('tag_name', '%'.$queryFilterTab['tagName'].'%');
     }
-    if(isset($tag)) {
-        $q->andWhere('article.tag = :tag')
-            ->setParameter('tag', $tag);
+
+    if(isset($queryFilterTab['title'])){
+        $q->andWhere('article.title LIKE :title')
+          ->setParameter('title', '%'.$queryFilterTab['title'].'%');
     }
 
     $q->orderBy('article.postDate', 'DESC');
@@ -122,38 +102,5 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
         ->setMaxResults($maxperpage);
 
     return new Paginator($q);
-  }
-
-  public function getTotalBySearch($title, $tag)
-  {
-    $tags = new \Doctrine\Common\Collections\ArrayCollection();
-    try{
-      $total = $this
-        ->createQueryBuilder('q')
-        ->select('count(q)')
-        ->innerJoin('q.tags', 'a');
-
-      if(isset($title)){
-          $total->andWhere('q.title = :title')
-              ->setParameter('title', $title);
-      }
-      if(isset($tag)) {
-        $tags[] = $tag;
-          $total->andWhere('q.tags = :tag')
-              ->setParameter('tag', $tags);
-      }
-
-      $total->getQuery()
-        ->getSingleScalarResult();
-
-      echo($total);
-      die;
-
-        return $total->getFirstResult();
-    } catch (\Exception $ex){
-        echo($ex);
-        die;
-         return null;
-    }
   }
 }

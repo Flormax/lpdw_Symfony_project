@@ -11,6 +11,10 @@
           {{tag.name}}
         {% endfor %}
       </i></p>
+      {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('blog_delete', {'id': article.id}) }}">Delete</a>
+        <a href="{{ path('blog_edit', {'id': article.id}) }}">Edit</a>
+      {% endif %}
     </div>
     <div style="margin-left:50px;">
       <b>Comments</b>

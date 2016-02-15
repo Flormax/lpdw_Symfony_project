@@ -46,7 +46,7 @@ class Comment
      * @var Article
      *
      * @ORM\ManyToOne(targetEntity="Article")
-     * @ORM\JoinColumn(name="com_target_id", referencedColumnName="art_id")
+     * @ORM\JoinColumn(name="com_target_id", referencedColumnName="art_id", onDelete="CASCADE")
      */
     private $target;
 

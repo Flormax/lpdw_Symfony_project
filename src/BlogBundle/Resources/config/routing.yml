@@ -3,20 +3,23 @@ blog_homepage:
     defaults:
         _controller:  BlogBundle:Article:index
         page:         null
-        category_name:     null
+        categoryName:     null
     requirements:
         page:     \d*
-        # category: \D
+
+blog_cookies_validation:
+    path:     /cookies
+    defaults:
+        _controller:  BlogBundle:Article:cookies
 
 blog_list:
     path:     /article/list/{page}
     defaults:
         _controller:  BlogBundle:Article:index
         page:         1
-        category_name:     null
+        categoryName:     null
     requirements:
         page:     \d*
-        # category: \D
 
 blog_categories:
     path:     /categories
@@ -30,7 +33,6 @@ blog_list_by_category:
         page:         1
     requirements:
         page:     \d*
-        # category: \D
 
 blog_search:
     path:     /search/{filters}/{page}
@@ -78,7 +80,3 @@ blog_login_check:
 
 blog_logout:
     path:     /logout
-
-blog_test:
-    path:     /test
-    defaults: { _controller: BlogBundle:Security:test }
